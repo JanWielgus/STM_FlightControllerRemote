@@ -14,11 +14,12 @@
 #define STORAGE_H_
 
 #include <FC_Tasker.h>
+#include <FC_TaskPlanner.h>
 #include "FC_MainCommunication.h"
+#include "FC_ExternalADC.h"
 #include "FC_ControlStick.h"
 #include <LiquidCrystal_I2C.h>
 #include "LCDhandler.h"
-#include <SoftwareSerial.h>
 #include "AndroidCommunication.h"
 #include "GestureRecognizer.h"
 
@@ -39,10 +40,11 @@ namespace Storage
 
     // Objects
     extern FC_SimpleTasker tasker;
+    extern FC_TaskPlanner taskPlanner;
     extern FC_MainCommunication com;
+    extern FC_ExternalADC extADC;
     extern LiquidCrystal_I2C lcd;
     extern LcdHandler display;
-    extern SoftwareSerial bluetoothSoftwareSerial;
     extern AndroidCommunication androidCom;
     extern GestureRecognizer gestureRecognizer;
 

@@ -11,21 +11,20 @@ void addTaskerFunctionsToTasker()
 	using namespace TaskerFunction;
 
 	// Communication
-	tasker.addFunction(updateSteeringSending, 6000L, 160); // 166.6Hz - higher than drone receiving frequency to make communication uninterrupted !!!!! (tested duration)
-	tasker.addFunction(updateOtherSending, 200000L, 170); // 5Hz (tested duration)
-	tasker.addFunction(box_updateReceiving, 100000L, 730); // 10Hz (tested duration)
+	tasker.addFunction(updateSteeringSending, 6000L, 0); // 166.6Hz - higher than drone receiving frequency to make communication uninterrupted !!!!! (tested duration)
+	tasker.addFunction(updateOtherSending, 200000L, 0); // 5Hz (tested duration)
+	tasker.addFunction(box_updateReceiving, 100000L, 0); // 10Hz (tested duration)
 
 	// Sticks
-	tasker.addFunction(readControlSticksValues, 6000L, 730); // 166.6Hz (tested duration) ( !!!!  Actual frequency is 140Hz and same as steering sending - TO SOLVE  )
-	tasker.addFunction(box_gestureRecognition, 100001L, 20); // 10Hz (without 1 at the end is 7-8Hz) (tested duration)
+	tasker.addFunction(readControlSticksValues, 4651L, 0); // 215Hz
+	tasker.addFunction(box_gestureRecognition, 100001L, 0); // 10Hz (without 1 at the end is 7-8Hz) (tested duration)
 
 	// Display
-	tasker.addFunction(box_updateDisplayFast, 100000L, 2002); // 10Hz (tested duration ? not sure if is real)
+	tasker.addFunction(box_updateDisplayFast, 100000L, 0); // 10Hz (tested duration ? not sure if is real)
 	tasker.addFunction(box_updateDisplaySlow, 333333L, 0); // 3Hz
 
 	// Others
-	tasker.addFunction(updateControlDiode, 1000000L, 5); // blink built in diode every second
-	tasker.addFunction(box_androidHandleReceivedData, 500000L, 1); // 2Hz do something with data received from the bluetooth device
+	tasker.addFunction(updateControlDiode, 1000000L, 0); // blink built in diode every second
 
 
 	//tasker.scheduleTasks(); // not working
@@ -128,12 +127,6 @@ namespace TaskerFunction
 	void box_updateDisplaySlow()
 	{
 		display.updateSlowParts();
-	}
-
-
-	void box_androidHandleReceivedData()
-	{
-		//androidCom.handleReceivedData();
 	}
 }
 

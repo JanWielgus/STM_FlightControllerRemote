@@ -22,7 +22,6 @@ namespace TaskerFunction
 
 	// Other
 	void updateControlDiode();
-	void box_androidHandleReceivedData();
 	
 }
 

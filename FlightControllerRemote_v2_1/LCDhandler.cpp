@@ -145,3 +145,11 @@ void LcdHandler::intToSizedString(String& outString, int16_t value, uint8_t leng
 	while ((outString).length() < length)
 		(outString) = " " + (outString);
 }
+
+String LcdHandler::intToSizedString(int16_t value, uint8_t length)
+{
+	String result(value);
+	while ((result).length() < length)
+		(result) = " " + (result);
+	return result;
+}

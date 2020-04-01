@@ -7,12 +7,27 @@
 */
 
 
+/*
+	!!!
+
+	IF CODE DOES NOT COMPILE
+	ADD FILES FROM THE externalLibraries FOLDER
+	TO THE SOLUTION
+
+	!!!
+*/
+
+
+#include <FC_Tasker.h>
+#include <FC_TaskPlanner.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-#include <FC_Tasker.h>
 #include <FC_Communication_Base.h>
 #include <FC_CustomDataTypes.h>
 #include <FC_EVA_Filter.h>
+#include "externalLibraries/I2Cdev.h"
+#include "externalLibraries/ADS1115.h" // 16 bit ADC library
+#include "FC_ExternalADC.h"
 #include "Storage.h"
 #include "config.h"
 #include "LCDhandler.h"
@@ -50,25 +65,34 @@ void setup()
 	digitalWrite(config::pin.m1pin, LOW);
 
 
+	// initialize the external adc
+	while (!extADC.initialize())
+	{
+		delay(500);
+	}
 
+
+
+	// Add all takser functions
 	addTaskerFunctionsToTasker();
 
 
+
 	// init the control sticks
-	thrStick.setInputProperties(config::pin.throttle, true, config::sticksCalibVal.thrMin, config::sticksCalibVal.thrMax);
-	rotStick.setInputProperties(config::pin.rotate, true, config::sticksCalibVal.rotMin, config::sticksCalibVal.rotMax);
-	TB_Stick.setInputProperties(config::pin.tiltTB, true, config::sticksCalibVal.TB_Min, config::sticksCalibVal.TB_Max);
-	LR_Stick.setInputProperties(config::pin.tiltLR, true, config::sticksCalibVal.LR_Min, config::sticksCalibVal.LR_Max);
-	thrStick.setOutputValueProperties(0, 1000, config::sticksCalibVal.thrCen, config::stickDeadZone);
-	rotStick.setOutputValueProperties(-500, 500, config::sticksCalibVal.rotCen, config::stickDeadZone);
-	TB_Stick.setOutputValueProperties(-500, 500, config::sticksCalibVal.TB_Cen, config::stickDeadZone);
-	LR_Stick.setOutputValueProperties(-500, 500, config::sticksCalibVal.LR_Cen, config::stickDeadZone);
+	thrStick.setProperties(config::sticksCalibVal.thrMin, config::sticksCalibVal.thrCen, config::sticksCalibVal.thrMax,
+		0, 0, 1000, config::stickDeadZone);
+	rotStick.setProperties(config::sticksCalibVal.rotMin, config::sticksCalibVal.rotCen, config::sticksCalibVal.rotMax,
+		-500, 0, 500, config::stickDeadZone);
+	TB_Stick.setProperties(config::sticksCalibVal.TB_Min, config::sticksCalibVal.TB_Cen, config::sticksCalibVal.TB_Max,
+		-500, 0, 500, config::stickDeadZone);
+	LR_Stick.setProperties(config::sticksCalibVal.LR_Min, config::sticksCalibVal.LR_Cen, config::sticksCalibVal.LR_Max,
+		-500, 0, 500, config::stickDeadZone);
 
 	// set stick filtering
-	thrStick.setFilterIntensity(60);
-	rotStick.setFilterIntensity(60);
-	TB_Stick.setFilterIntensity(60);
-	LR_Stick.setFilterIntensity(60);
+	thrStick.setFilterIntensity(config::filterIntensity);
+	rotStick.setFilterIntensity(config::filterIntensity);
+	TB_Stick.setFilterIntensity(config::filterIntensity);
+	LR_Stick.setFilterIntensity(config::filterIntensity);
 
 
 	// display
@@ -83,7 +107,8 @@ void setup()
 // Add the main program code into the continuous loop() function
 void loop()
 {
-	///////////////androidCom.read(); // Read bluetooth software serial
-
+	// This are the only two thins inside the loop()
+	// All other stuff have to be called using this objects
 	tasker.runTasker();
+	taskPlanner.runPlanner();
 }

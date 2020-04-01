@@ -3,63 +3,61 @@
 // 
 
 #include "FC_ControlStick.h"
+#include "Storage.h"
 
-FC_ControlStick::FC_ControlStick()
+FC_ControlStick::FC_ControlStick(IStickAnaglogSource* analogSource)
 	:filter(0.3)
 {
-	// Nothing here
+	this->analogSource = analogSource;
 }
 
 
-void FC_ControlStick::setInputProperties(uint8_t pin, bool reverseFlag, uint16_t minRawVal, uint16_t maxRawVal)
+void FC_ControlStick::setProperties(uint16_t rawMinVal, uint16_t rawCenterVal, uint16_t rawMaxVal,
+									int16_t finalMinVal, int16_t finalCenVal, int16_t finalMaxVal,
+									uint16_t deadZone)
 {
-	this->pin = pin;
-	calib.reverseFlag = reverseFlag;
-	setRawBorderValues(minRawVal, maxRawVal);
-}
+	calib.rawMinValue = rawMinVal;
+	calib.rawCenterValue = rawCenterVal;
+	calib.rawMaxValue = rawMaxVal;
 
+	outputProperties.finalMinValue = finalMinVal;
+	outputProperties.finalCenterValue = finalCenVal;
+	outputProperties.finalMaxValue = finalMaxVal;
 
-void FC_ControlStick::setOutputValueProperties(int16_t minFinalVal, int16_t maxFinalVal, int16_t rawCenterValue, uint8_t nearZeroDeadZone)
-{
-	outputProperties.minFinalValue = minFinalVal;
-	outputProperties.maxFinalValue = maxFinalVal;
-	outputProperties.rawCenterValue = rawCenterValue;
-	setDeadZone(nearZeroDeadZone);
+	setDeadZone(deadZone);
 }
 
 
 void FC_ControlStick::readValue()
 {
-	rawValue = analogRead(pin);
+	// Get the raw value (!! MUST FIT in int16_t type)
+	rawValue = (*analogSource).getValue();
 	
-	// reverse if needed
-	if (calib.reverseFlag)
-	{
-		rawValue = rawValue - (calib.minRawValue + calib.maxRawValue);
-		rawValue = abs(rawValue);
-	}
-	
+
 	// filter
 	float temp = rawValue;
 	value = (int16_t)(filter.updateFilter(temp) + 0.5);
+
 	
 	// calculate the output values
-	if (value > outputProperties.rawCenterValue + outputProperties.deadZone)
+	if (value > calib.rawCenterValue + outputProperties.deadZone)
 	{
 		value = map(value,
-					outputProperties.rawCenterValue + outputProperties.deadZone, calib.maxRawValue,
-					0, outputProperties.maxFinalValue);
-		value = constrain(value, 0, outputProperties.maxFinalValue);
+			calib.rawCenterValue + outputProperties.deadZone,	calib.rawMaxValue,
+			outputProperties.finalCenterValue,					outputProperties.finalMaxValue	);
+
+		value = constrain(value, outputProperties.finalCenterValue, outputProperties.finalMaxValue);
 	}
-	else if (value < outputProperties.rawCenterValue - outputProperties.deadZone)
+	else if (value < calib.rawCenterValue - outputProperties.deadZone)
 	{
 		value = map(value,
-					calib.minRawValue, outputProperties.rawCenterValue - outputProperties.deadZone,
-					outputProperties.minFinalValue, 0);
-		value = constrain(value, outputProperties.minFinalValue, 0);
+			calib.rawMinValue,				calib.rawCenterValue - outputProperties.deadZone,
+			outputProperties.finalMinValue,	outputProperties.finalCenterValue					);
+
+		value = constrain(value, outputProperties.finalMinValue, outputProperties.finalCenterValue);
 	}
 	else
-		value = 0;
+		value = outputProperties.finalCenterValue;
 }
 
 
@@ -82,16 +80,48 @@ void FC_ControlStick::setFilterIntensity(uint8_t intensity)
 }
 
 
-void FC_ControlStick::setRawBorderValues(uint16_t minVal, uint16_t maxVal)
-{
-	calib.minRawValue = minVal;
-	calib.maxRawValue = maxVal;
-}
-
-
-void FC_ControlStick::setDeadZone(uint8_t deadZone)
+void FC_ControlStick::setDeadZone(uint16_t deadZone)
 {
 	outputProperties.deadZone = deadZone;
 }
 
 
+
+///////////////////// \/   \/   \/
+//
+// ANALOG SOURCE CHANGE INSIDE THIS CLASSES
+// 
+///////////////////// \/   \/   \/
+
+
+uint16_t ThrottleStickAnalogSource::getValue()
+{
+	uint16_t value = Storage::extADC.getReading(config::pin.throttle);
+	if (config::stickAnalogReverse.thr)
+		return getReversed(value);
+	return value;
+}
+
+uint16_t RotateStickAnalogSource::getValue()
+{
+	uint16_t value = Storage::extADC.getReading(config::pin.rotate);
+	if (config::stickAnalogReverse.rot)
+		return getReversed(value);
+	return value;
+}
+
+uint16_t TB_StickAnalogSource::getValue()
+{
+	uint16_t value = Storage::extADC.getReading(config::pin.tiltTB);
+	if (config::stickAnalogReverse.tb)
+		return getReversed(value);
+	return value;
+}
+
+uint16_t LR_StickAnalogSource::getValue()
+{
+	uint16_t value = Storage::extADC.getReading(config::pin.tiltLR);
+	if (config::stickAnalogReverse.lr)
+		return getReversed(value);
+	return value;
+}
