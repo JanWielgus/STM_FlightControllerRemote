@@ -18,11 +18,13 @@
 */
 
 
-#include <FC_Tasker.h>
+#include <FC_ObjectTasker.h>
+#include <FC_Task.h>
 #include <FC_TaskPlanner.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <FC_Communication_Base.h>
+#include <FC_GrowingArray.h>
 #include <FC_CustomDataTypes.h>
 #include <FC_EVA_Filter.h>
 #include "externalLibraries/I2Cdev.h"
@@ -109,6 +111,6 @@ void loop()
 {
 	// This are the only two thins inside the loop()
 	// All other stuff have to be called using this objects
-	tasker.runTasker();
+	tasker.run();
 	taskPlanner.runPlanner();
 }

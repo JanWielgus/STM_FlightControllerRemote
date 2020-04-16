@@ -10,40 +10,32 @@ void addTaskerFunctionsToTasker()
 {
 	using namespace TaskerFunction;
 
+
 	// Communication
-	tasker.addFunction(updateSteeringSending, 6000L, 0); // 166.6Hz - higher than drone receiving frequency to make communication uninterrupted !!!!! (tested duration)
-	tasker.addFunction(updateOtherSending, 200000L, 0); // 5Hz (tested duration)
-	tasker.addFunction(box_updateReceiving, 100000L, 0); // 10Hz (tested duration)
+	tasker.addTask(new UpdateSteeringSending, 6000L, 0); // 167Hz
+	tasker.addTask(new UpdateOtherSending, 200000L, 0); // 5Hz
+	tasker.addTask(new UpdateReceiving, 100000L, 0); // 10Hz
 
 	// Sticks
-	tasker.addFunction(readControlSticksValues, 4651L, 0); // 215Hz
-	tasker.addFunction(box_gestureRecognition, 100001L, 0); // 10Hz (without 1 at the end is 7-8Hz) (tested duration)
+	tasker.addTask(new ReadControlSticksValues, 4651L, 0); // 215Hz
+	tasker.addTask(new GestureRecognition, 100000L, 0); // 10Hz
 
 	// Display
-	tasker.addFunction(box_updateDisplayFast, 100000L, 0); // 10Hz (tested duration ? not sure if is real)
-	tasker.addFunction(box_updateDisplaySlow, 333333L, 0); // 3Hz
+	tasker.addTask(new UpdateDisplayFast, 100000L, 0); // 10Hz
+	tasker.addTask(new UpdateDisplaySlow, 333333L, 0); // 3Hz
 
 	// Others
-	tasker.addFunction(updateControlDiode, 1000000L, 0); // blink built in diode every second
-
-
-	//tasker.scheduleTasks(); // not working
+	tasker.addTask(new UpdateControlDiode, 1000000L, 0); // 1Hz
 }
+
 
 
 
 namespace TaskerFunction
 {
-	void updateControlDiode()
-	{
-		static bool ledState = LOW;
-		digitalWrite(LED_BUILTIN, ledState);
-		ledState = !ledState;
-	}
+	// Communication
 
-
-
-	void updateSteeringSending()
+	void UpdateSteeringSending::execute()
 	{
 		com.toSend.steer.throttle = thrStick.getValue();
 		com.toSend.steer.rotate = rotStick.getValue();
@@ -54,8 +46,7 @@ namespace TaskerFunction
 	}
 
 
-
-	void updateOtherSending()
+	void UpdateOtherSending::execute()
 	{
 		// Update sent values before sending
 
@@ -92,15 +83,17 @@ namespace TaskerFunction
 	}
 
 
-
-	void box_updateReceiving()
+	void UpdateReceiving::execute()
 	{
 		com.receiveAndUnpackData();
 	}
 
 
 
-	void readControlSticksValues()
+
+	// Sticks
+
+	void ReadControlSticksValues::execute()
 	{
 		thrStick.readValue();
 		rotStick.readValue();
@@ -109,24 +102,37 @@ namespace TaskerFunction
 	}
 
 
-
-	void box_gestureRecognition()
+	void GestureRecognition::execute()
 	{
 		gestureRecognizer.recognizeArmingAndDisarmingGesture();
 	}
 
 
 
-	void box_updateDisplayFast()
+
+	// Display
+
+	void UpdateDisplayFast::execute()
 	{
 		display.updateFastParts();
 	}
 
 
-
-	void box_updateDisplaySlow()
+	void UpdateDisplaySlow::execute()
 	{
 		display.updateSlowParts();
 	}
+
+
+
+
+	// Other
+
+	void UpdateControlDiode::execute()
+	{
+		digitalWrite(LED_BUILTIN, ledState);
+		ledState = !ledState;
+	}
+
 }
 

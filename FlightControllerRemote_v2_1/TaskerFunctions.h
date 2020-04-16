@@ -1,27 +1,63 @@
 #ifndef TASKERFUNCTIONS_H_
 #define TASKERFUNCTIONS_H_
 
+#include <FC_Task.h>
+
 void addTaskerFunctionsToTasker();
 
 namespace TaskerFunction
 {
-	// box_... is when only execute a method inside
+// Communication
 
-	// Communication
-	void updateSteeringSending();
-	void updateOtherSending();
-	void box_updateReceiving();
+	class UpdateSteeringSending : public FC_Task
+	{
+		void execute() override;
+	};
 
-	// Sticks
-	void readControlSticksValues();
-	void box_gestureRecognition();
+	class UpdateOtherSending : public FC_Task
+	{
+		void execute() override;
+	};
 
-	// Display
-	void box_updateDisplayFast();
-	void box_updateDisplaySlow();
+	class UpdateReceiving : public FC_Task
+	{
+		void execute() override;
+	};
 
-	// Other
-	void updateControlDiode();
+
+// Sticks
+
+	class ReadControlSticksValues : public FC_Task
+	{
+		void execute() override;
+	};
+
+	class GestureRecognition : public FC_Task
+	{
+		void execute() override;
+	};
+
+
+// Display
+
+	class UpdateDisplayFast : public FC_Task
+	{
+		void execute() override;
+	};
+
+	class UpdateDisplaySlow : public FC_Task
+	{
+		void execute() override;
+	};
+
+
+// Other
+
+	class UpdateControlDiode : public FC_Task
+	{
+		bool ledState = LOW;
+		void execute() override;
+	};
 	
 }
 

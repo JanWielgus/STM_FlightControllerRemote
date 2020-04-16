@@ -12,7 +12,8 @@
 
 namespace config
 {
-	const uint8_t MaxAmtOfTaskPlannerTasks = 10;
+	const uint8_t MaxAmtOfTaskerTasks = 25; // tasks array size inside tasker
+	const uint8_t MaxAmtOfTaskPlannerTasks = 10; // max amount of tasks planned at once
 
 
 	// Pins

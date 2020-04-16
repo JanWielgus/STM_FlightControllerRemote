@@ -5,7 +5,7 @@
 namespace Storage
 {
 	// Objects
-	FC_SimpleTasker tasker;
+	FC_ObjectTasker tasker(config::MaxAmtOfTaskerTasks);
 	FC_TaskPlanner taskPlanner(config::MaxAmtOfTaskPlannerTasks);
 	FC_MainCommunication com(&Serial, 100);
 	FC_ExternalADC extADC(&taskPlanner);

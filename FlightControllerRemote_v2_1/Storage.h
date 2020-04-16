@@ -13,7 +13,8 @@
 #ifndef STORAGE_H_
 #define STORAGE_H_
 
-#include <FC_Tasker.h>
+#include <FC_ObjectTasker.h>
+#include <FC_Task.h>
 #include <FC_TaskPlanner.h>
 #include "FC_MainCommunication.h"
 #include "FC_ExternalADC.h"
@@ -39,7 +40,7 @@ namespace Storage
 
 
     // Objects
-    extern FC_SimpleTasker tasker;
+    extern FC_ObjectTasker tasker;
     extern FC_TaskPlanner taskPlanner;
     extern FC_MainCommunication com;
     extern FC_ExternalADC extADC;

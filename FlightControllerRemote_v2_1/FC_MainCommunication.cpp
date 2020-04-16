@@ -82,9 +82,9 @@ bool FC_MainCommunication::receiveAndUnpackData()
 			for (int i=0; i<4; i++)
 				data.received.latitude.byteArr()[i] = dpReceived.buffer[18+i];
 			// random value
-			data.received.errors1.byte = dpReceived.buffer[23];
-			data.received.errors2.byte = dpReceived.buffer[24];
-			data.received.bitSwitches1.byte = dpReceived.buffer[25];
+			data.received.errors1.byteArr()[0] = dpReceived.buffer[23];
+			data.received.errors2.byteArr()[0] = dpReceived.buffer[24];
+			data.received.bitSwitches1.byteArr()[0] = dpReceived.buffer[25];
 			// margin 6x
 		}
 	
@@ -93,9 +93,9 @@ bool FC_MainCommunication::receiveAndUnpackData()
 		else if (checkReceivedDataPacket(receivedPacketTypes.TYPE2_ID, receivedPacketTypes.TYPE2_SIZE, true))
 		{
 			// voltage on the lowest cell
-			data.received.errors1.byte = dpReceived.buffer[3];
-			data.received.errors2.byte = dpReceived.buffer[4];
-			data.received.bitSwitches1.byte = dpReceived.buffer[5];
+			data.received.errors1.byteArr()[0] = dpReceived.buffer[3];
+			data.received.errors2.byteArr()[0] = dpReceived.buffer[4];
+			data.received.bitSwitches1.byteArr()[0] = dpReceived.buffer[5];
 		}
 		
 
@@ -147,8 +147,8 @@ void FC_MainCommunication::packAndSendData(uint8_t packetID, uint8_t packetSize)
 		dpToSend.buffer[6] = data.toSend.flightMode;
 		dpToSend.buffer[7] = data.toSend.arming;
 		// random value
-		dpToSend.buffer[9] = data.toSend.bitSwitches1.byte;
-		dpToSend.buffer[10] = data.toSend.bitSwitches2.byte;
+		dpToSend.buffer[9] = data.toSend.bitSwitches1.byteArr()[0];
+		dpToSend.buffer[10] = data.toSend.bitSwitches2.byteArr()[0];
 		dpToSend.buffer[11] = data.toSend.signalLostScenario;
 		
 		
@@ -162,8 +162,8 @@ void FC_MainCommunication::packAndSendData(uint8_t packetID, uint8_t packetSize)
 	{
 		dpToSend.buffer[2] = data.toSend.flightMode;
 		dpToSend.buffer[3] = data.toSend.arming;
-		dpToSend.buffer[4] = data.toSend.bitSwitches1.byte;
-		dpToSend.buffer[5] = data.toSend.bitSwitches2.byte;
+		dpToSend.buffer[4] = data.toSend.bitSwitches1.byteArr()[0];
+		dpToSend.buffer[5] = data.toSend.bitSwitches2.byteArr()[0];
 		dpToSend.buffer[6] = data.toSend.signalLostScenario;
 		
 		
