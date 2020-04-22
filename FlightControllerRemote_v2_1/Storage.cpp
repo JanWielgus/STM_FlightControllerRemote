@@ -7,7 +7,7 @@ namespace Storage
 	// Objects
 	FC_ObjectTasker tasker(config::MaxAmtOfTaskerTasks);
 	FC_TaskPlanner taskPlanner(config::MaxAmtOfTaskPlannerTasks);
-	FC_MainCommunication com(&Serial, 100);
+	FC_CommunicationHandler comm(&Serial, config::MaxCommPacketBytes);
 	FC_ExternalADC extADC(&taskPlanner);
 	LiquidCrystal_I2C lcd(config::LCD_ADDRESS, 16, 2);
 	LcdHandler display;

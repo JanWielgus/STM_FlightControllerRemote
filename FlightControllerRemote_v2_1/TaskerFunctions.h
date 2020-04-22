@@ -19,7 +19,13 @@ namespace TaskerFunction
 		void execute() override;
 	};
 
-	class UpdateReceiving : public FC_Task
+	class BasicReceivedUpdate : public FC_Task
+	{
+	protected:
+		void execute() override;
+	};
+
+	class FullReceivedUpdate : public BasicReceivedUpdate
 	{
 		void execute() override;
 	};

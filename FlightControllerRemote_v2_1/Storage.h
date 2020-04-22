@@ -16,13 +16,15 @@
 #include <FC_ObjectTasker.h>
 #include <FC_Task.h>
 #include <FC_TaskPlanner.h>
-#include "FC_MainCommunication.h"
+#include <FC_CommunicationHandler.h>
 #include "FC_ExternalADC.h"
 #include "FC_ControlStick.h"
 #include <LiquidCrystal_I2C.h>
 #include "LCDhandler.h"
 #include "AndroidCommunication.h"
 #include "GestureRecognizer.h"
+#include "CommRecDataPackets.h"
+#include "CommSendDataPackets.h"
 
 
 // New data types
@@ -42,7 +44,7 @@ namespace Storage
     // Objects
     extern FC_ObjectTasker tasker;
     extern FC_TaskPlanner taskPlanner;
-    extern FC_MainCommunication com;
+    extern FC_CommunicationHandler comm;
     extern FC_ExternalADC extADC;
     extern LiquidCrystal_I2C lcd;
     extern LcdHandler display;

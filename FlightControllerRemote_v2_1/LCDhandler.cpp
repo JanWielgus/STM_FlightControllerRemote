@@ -57,7 +57,7 @@ void LcdHandler::updateFastParts()
 	lcd.print(stickValueToSymbolHorizontal(Storage::LR_Stick.getValue()));
 	
 	// Altitude
-	print(Storage::com.received.altitude, 8, 0);
+	print(ReceiveData::altitude, 8, 0);
 }
 
 
@@ -85,7 +85,7 @@ void LcdHandler::updateSlowParts()
 	// Other slow parts
 
 	// Drone angle
-	print(Storage::com.received.tilt_TB, 8, 0);
+	print(ReceiveData::tilt_TB, 8, 0);
 
 	// P PID value from the android
 	print(Storage::androidData.PID_P, 12, 0);

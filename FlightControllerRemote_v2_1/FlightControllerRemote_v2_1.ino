@@ -18,12 +18,15 @@
 */
 
 
+#include <FC_Communication_Base.h>
+#include <FC_CommunicationHandler.h>
+#include "CommSendDataPackets.h"
+#include "CommRecDataPackets.h"
 #include <FC_ObjectTasker.h>
 #include <FC_Task.h>
 #include <FC_TaskPlanner.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-#include <FC_Communication_Base.h>
 #include <FC_GrowingArray.h>
 #include <FC_CustomDataTypes.h>
 #include <FC_EVA_Filter.h>
@@ -77,6 +80,10 @@ void setup()
 
 	// Add all takser functions
 	addTaskerFunctionsToTasker();
+
+	// Makes that time has not influence connection stability value
+	// Use after adding tasks to tasker
+	comm.adaptConStabFilterToInterval();
 
 
 

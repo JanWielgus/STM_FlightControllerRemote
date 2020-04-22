@@ -14,7 +14,11 @@ void addTaskerFunctionsToTasker()
 	// Communication
 	tasker.addTask(new UpdateSteeringSending, 6000L, 0); // 167Hz
 	tasker.addTask(new UpdateOtherSending, 200000L, 0); // 5Hz
-	tasker.addTask(new UpdateReceiving, 100000L, 0); // 10Hz
+	tasker.addTask(&comm, 22000L, 0); // 45Hz
+
+	// received packet events
+	ReceiveData::DP_basic.setPacketEvent(new BasicReceivedUpdate);
+	ReceiveData::DP_full.setPacketEvent(new FullReceivedUpdate);
 
 	// Sticks
 	tasker.addTask(new ReadControlSticksValues, 4651L, 0); // 215Hz
@@ -37,12 +41,12 @@ namespace TaskerFunction
 
 	void UpdateSteeringSending::execute()
 	{
-		com.toSend.steer.throttle = thrStick.getValue();
-		com.toSend.steer.rotate = rotStick.getValue();
-		com.toSend.steer.TB = TB_Stick.getValue();
-		com.toSend.steer.LR = LR_Stick.getValue();
+		SendData::throttle = thrStick.getValue();
+		SendData::rot_stick = rotStick.getValue();
+		SendData::TB_stick = TB_Stick.getValue();
+		SendData::LR_stick = LR_Stick.getValue();
 
-		com.packAndSendData(com.sendPacketTypes.TYPE4_ID, com.sendPacketTypes.TYPE4_SIZE);
+		comm.sendDataPacket(&SendData::DP_steering);
 	}
 
 
@@ -50,23 +54,27 @@ namespace TaskerFunction
 	{
 		// Update sent values before sending
 
-		com.toSend.arming = armState == armed ? 1 : 0;
+		SendData::arming = armState == armed ? 1 : 0;
 
 		// Set the flight modes  ( FLIGHT MODES SYSTEM WILL CHANGE SO DO THIS )
 		if (digitalRead(config::pin.rightSwitch) == LOW)
-			com.toSend.flightMode = 0; // stabilize
+			SendData::flightMode = 0; // stabilize
 		else
-			com.toSend.flightMode = 1; // altHold
+			SendData::flightMode = 1; // altHold
 
 
 		// OTHER DATA !!!
 
 
 		// send packed data
-		//com.packAndSendData(com.sendPacketTypes.TYPE2_ID, com.sendPacketTypes.TYPE2_SIZE);
-		com.packAndSendData(com.sendPacketTypes.TYPE1_ID, com.sendPacketTypes.TYPE1_SIZE);
+		//comm.sendDataPacket(&SendData::DP_basicBackground);
+		comm.sendDataPacket(&SendData::DP_fullBackground);
 
 
+		// !!!
+		//
+		// THIS HAVE TO BE REBUILT !!!
+		/*
 		// check if need to send PID tuning values
 		if (flags.btNeedToUpdatePID)
 		{
@@ -79,16 +87,26 @@ namespace TaskerFunction
 			com.toSend.PIDvalues.D = androidData.PID_D;
 
 			com.packAndSendData(com.sendPacketTypes.TYPE3_ID, com.sendPacketTypes.TYPE3_SIZE);
-		}
+		}*/
 	}
 
 
-	void UpdateReceiving::execute()
+	void BasicReceivedUpdate::execute()
 	{
-		com.receiveAndUnpackData();
+		// When basic data packet was received
+		// ...
+
 	}
 
 
+	void FullReceivedUpdate::execute()
+	{
+		BasicReceivedUpdate::execute();
+
+		// When full data packet was received
+		// ...
+
+	}
 
 
 	// Sticks
