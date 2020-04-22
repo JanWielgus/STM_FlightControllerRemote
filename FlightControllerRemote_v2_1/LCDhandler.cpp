@@ -57,7 +57,7 @@ void LcdHandler::updateFastParts()
 	lcd.print(stickValueToSymbolHorizontal(Storage::LR_Stick.getValue()));
 	
 	// Altitude
-	print(ReceiveData::altitude, 8, 0);
+	//print(ReceiveData::altitude, 8, 0); // same place as tilt
 }
 
 

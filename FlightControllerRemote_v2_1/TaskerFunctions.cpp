@@ -16,6 +16,10 @@ void addTaskerFunctionsToTasker()
 	tasker.addTask(new UpdateOtherSending, 200000L, 0); // 5Hz
 	tasker.addTask(&comm, 22000L, 0); // 45Hz
 
+	// add receive data packets
+	comm.addRaceiveDataPacketPointer(&ReceiveData::DP_basic, 4);
+	comm.addRaceiveDataPacketPointer(&ReceiveData::DP_full, 4);
+
 	// received packet events
 	ReceiveData::DP_basic.setPacketEvent(new BasicReceivedUpdate);
 	ReceiveData::DP_full.setPacketEvent(new FullReceivedUpdate);
