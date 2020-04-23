@@ -48,7 +48,7 @@ using namespace Storage;
 void setup()
 {
 	// Communication serial
-	Serial.begin(57600);
+	Serial.begin(115200);
 	delay(300);
 
 	// bluetooth software serial
@@ -98,10 +98,10 @@ void setup()
 		-500, 0, 500, config::stickDeadZone);
 
 	// set stick filtering
-	thrStick.setFilterIntensity(config::filterIntensity);
-	rotStick.setFilterIntensity(config::filterIntensity);
-	TB_Stick.setFilterIntensity(config::filterIntensity);
-	LR_Stick.setFilterIntensity(config::filterIntensity);
+	thrStick.setFilterIntensity(config::stickFilterIntensity);
+	rotStick.setFilterIntensity(config::stickFilterIntensity);
+	TB_Stick.setFilterIntensity(config::stickFilterIntensity);
+	LR_Stick.setFilterIntensity(config::stickFilterIntensity);
 
 
 	// display

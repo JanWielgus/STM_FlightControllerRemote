@@ -87,7 +87,7 @@ namespace config
 	} sticksCalibVal;
 	
 	const uint16_t stickDeadZone = 450; // 450
-	const uint8_t filterIntensity = 69;
+	const uint8_t stickFilterIntensity = 50;
 }
 
 
