@@ -93,6 +93,10 @@ void LcdHandler::updateSlowParts()
 	// Right switch
 	bool swState = digitalRead(config::pin.rightSwitch);
 	print(swState, 15, 1);
+
+	// temp
+	//print(intToSizedString(Storage::comm.getConnectionStability(), 3), 8, 1);
+	print(intToSizedString(ReceiveData::receivingConnectionStability, 3), 8, 1);
 }
 
 /*

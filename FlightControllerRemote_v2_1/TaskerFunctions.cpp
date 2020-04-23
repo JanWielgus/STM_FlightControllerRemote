@@ -12,7 +12,7 @@ void addTaskerFunctionsToTasker()
 
 
 	// Communication
-	tasker.addTask(new UpdateSteeringSending, 6000L, 0); // 167Hz
+	tasker.addTask(new UpdateSteeringSending, 3703L, 0); // 270Hz (!!! TO CHECK ! I don't know why some packets are lost and don't arrive)
 	tasker.addTask(new UpdateOtherSending, 200000L, 0); // 5Hz
 	tasker.addTask(&comm, 22000L, 0); // 45Hz
 
