@@ -48,7 +48,7 @@ using namespace Storage;
 void setup()
 {
 	// Communication serial
-	Serial.begin(19200);
+	Serial.begin(57600);
 	delay(300);
 
 	// bluetooth software serial
