@@ -70,14 +70,9 @@ void LcdHandler::updateSlowParts()
 	case disarmed:
 		lcd.print("dsmd");
 		break;
-	case arming1:
-		lcd.print("a1");
-		break;
-	case arming2:
-		lcd.print("a2");
-		break;
+
 	case armed:
-		lcd.print("arm");
+		lcd.print("arm ");
 		break;
 	}
 

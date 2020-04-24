@@ -28,7 +28,7 @@
 
 
 // New data types
-enum armStateType { disarmed, arming1, arming2, armed };
+enum armStateType { disarmed, armed };
 
 // list of all flight modes
 enum FlightModeType
