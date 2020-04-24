@@ -29,7 +29,6 @@ namespace SendData
 	extern uint16Byte pilotDistance;
 	extern uint16Byte pilotDirection;
 	extern uint8_t flightMode;
-	extern uint8_t arming;
 	extern bitByte bitArray1;
 	extern bitByte bitArray2;
 	extern uint8_t signalLostScenario;
@@ -69,7 +68,6 @@ namespace SendData
 
 				// other
 				add_uint8_t(flightMode);
-				add_uint8_t(arming);
 				add_uint8_t(signalLostScenario);
 			}
 		};
@@ -87,7 +85,6 @@ namespace SendData
 
 				// other
 				add_uint8_t(flightMode);
-				add_uint8_t(arming);
 				add_uint8_t(signalLostScenario);
 			}
 		};

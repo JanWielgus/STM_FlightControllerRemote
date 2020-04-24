@@ -16,7 +16,6 @@ namespace SendData
 	uint16Byte pilotDistance;
 	uint16Byte pilotDirection;
 	uint8_t flightMode;
-	uint8_t arming;
 	bitByte bitArray1;
 	bitByte bitArray2;
 	uint8_t signalLostScenario;

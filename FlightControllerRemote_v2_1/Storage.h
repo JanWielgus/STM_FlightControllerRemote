@@ -30,6 +30,15 @@
 // New data types
 enum armStateType { disarmed, arming1, arming2, armed };
 
+// list of all flight modes
+enum FlightModeType
+{
+    UNARMED, // used when drone have to be unarmed
+    STABILIZE, // keeps drone level
+    ALT_HOLD, // extend stabilize, take control of throttle and keep altitude
+    POS_HOLD, // extend altHold, take control of position
+};
+
 
 namespace Storage
 {

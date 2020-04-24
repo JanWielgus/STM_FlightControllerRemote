@@ -58,13 +58,17 @@ namespace TaskerFunction
 	{
 		// Update sent values before sending
 
-		SendData::arming = armState == armed ? 1 : 0;
-
-		// Set the flight modes  ( FLIGHT MODES SYSTEM WILL CHANGE SO DO THIS )
-		if (digitalRead(config::pin.rightSwitch) == LOW)
-			SendData::flightMode = 0; // stabilize
+		// Set flight mode
+		if (armState != armStateType::armed)
+			SendData::flightMode = FlightModeType::UNARMED;
 		else
-			SendData::flightMode = 1; // altHold
+		{
+			if (digitalRead(config::pin.rightSwitch) == LOW)
+				SendData::flightMode = 0; // stabilize
+			else
+				SendData::flightMode = 1; // altHold
+		}
+
 
 
 		// OTHER DATA !!!
