@@ -16,6 +16,8 @@ void addTaskerFunctionsToTasker()
 	tasker.addTask(new UpdateOtherSending, 200000L, 0); // 5Hz
 	tasker.addTask(&comm, 22000L, 0); // 45Hz
 
+	// Android communication task is automatically added after successful connection with wifi
+
 	// add receive data packets
 	comm.addRaceiveDataPacketPointer(&ReceiveData::DP_basic, 4);
 	comm.addRaceiveDataPacketPointer(&ReceiveData::DP_full, 4);

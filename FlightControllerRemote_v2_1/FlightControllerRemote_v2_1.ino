@@ -22,6 +22,8 @@
 #include <FC_CommunicationHandler.h>
 #include "CommSendDataPackets.h"
 #include "CommRecDataPackets.h"
+#include <ESP8266WiFi.h>
+#include <WiFiUdp.h>
 #include <FC_ObjectTasker.h>
 #include <FC_Task.h>
 #include <FC_TaskPlanner.h>
@@ -111,6 +113,9 @@ void setup()
 
 	// Necessary for LCD to keep up
 	Wire.setClock(400000L);
+
+	// Connect with wifi asynchronically (there is timeout in config)
+	androidComm.connectWithWiFiAsync(&taskPlanner);
 }
 
 // Add the main program code into the continuous loop() function

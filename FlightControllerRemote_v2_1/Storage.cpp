@@ -11,8 +11,8 @@ namespace Storage
 	FC_ExternalADC extADC(&taskPlanner);
 	LiquidCrystal_I2C lcd(config::LCD_ADDRESS, 16, 2);
 	LcdHandler display;
-	AndroidCommunication androidCom;
 	GestureRecognizer gestureRecognizer;
+	AndroidCommunication& androidComm = *AndroidCommunication::getInstance();
 
 
 	// control sticks

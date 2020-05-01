@@ -83,7 +83,9 @@ void LcdHandler::updateSlowParts()
 	print(ReceiveData::tilt_TB, 8, 0);
 
 	// P PID value from the android
-	print(Storage::androidData.PID_P, 12, 0);
+	print(SendData::tunedPID_values.P, 12, 0);
+
+	print(Storage::androidComm.isConnected(), 14, 1);
 
 	// Right switch
 	bool swState = digitalRead(config::pin.rightSwitch);

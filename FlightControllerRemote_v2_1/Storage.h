@@ -45,8 +45,8 @@ namespace Storage
     // All global flags
     struct
     {
-        bool btNeedToUpdatePID = false; // if this is true - need to send new PID data to the drone
-        // RESET THIS TO false AFTER SENDING TO THE DRONE
+        // all flags
+        bool testFlagToDelete = true;
     } flags;
 
 
@@ -57,8 +57,8 @@ namespace Storage
     extern FC_ExternalADC extADC;
     extern LiquidCrystal_I2C lcd;
     extern LcdHandler display;
-    extern AndroidCommunication androidCom;
     extern GestureRecognizer gestureRecognizer;
+    extern AndroidCommunication& androidComm;
 
 
     // control sticks
@@ -70,17 +70,6 @@ namespace Storage
 
     // Other types
     extern armStateType armState; // old "state"
-
-
-    struct
-    {
-        // Bluetooth app received data
-        uint8_t controllerID;
-        float PID_P;
-        float PID_I;
-        uint8_t PID_Imax;
-        float PID_D;
-    } androidData;
 }
 
 
