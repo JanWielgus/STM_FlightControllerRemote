@@ -65,10 +65,10 @@ namespace TaskerFunction
 			SendData::flightMode = FlightModeType::UNARMED;
 		else
 		{
-			//if (digitalRead(config::pin.rightSwitch) == LOW)
+			if (digitalRead(config::pin.rightSwitch) == HIGH)
 				SendData::flightMode = FlightModeType::STABILIZE;
-			//else
-				//SendData::flightMode = FlightModeType::ALT_HOLD;
+			else
+				SendData::flightMode = FlightModeType::ALT_HOLD;
 		}
 
 

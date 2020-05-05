@@ -20,10 +20,39 @@ GestureRecognizer::GestureRecognizer()
 // 10Hz
 void GestureRecognizer::recognizeArmingAndDisarmingGesture()
 {
+	/*
 	if (digitalRead(config::pin.rightSwitch) == HIGH)
 		armState = armStateType::disarmed;
 	else
 		armState = armStateType::armed;
+		*/
+
+
+	thr = thrStick.getValue();
+	rot = rotStick.getValue();
+	tb = TB_Stick.getValue();
+	lr = LR_Stick.getValue();
+	static bool stage1Flag = false;
+
+	if (thr == 0 && tb == 0 && lr == 0)
+	{
+		if (stage1Flag == false && rot > 460)
+		{
+			// change arm state to the opposite
+			if (armState == armStateType::armed)
+				armState = armStateType::disarmed;
+			else armState = armStateType::armed;
+			stage1Flag = true;
+		}
+
+		if (rot <= 100)
+			stage1Flag = false;
+	}
+	else
+		stage1Flag = false;
+	
+
+
 
 
 	/*
