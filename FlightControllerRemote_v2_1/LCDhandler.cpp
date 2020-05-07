@@ -80,7 +80,7 @@ void LcdHandler::updateSlowParts()
 	// Other slow parts
 
 	// Drone angle
-	print(ReceiveData::tilt_TB, 8, 0);
+	print(intToSizedString(ReceiveData::tilt_TB, 3), 8, 0);
 
 	// P PID value from the android
 	print(SendData::tunedPID_values.P, 12, 0);
@@ -93,7 +93,8 @@ void LcdHandler::updateSlowParts()
 
 	// temp
 	//print(intToSizedString(Storage::comm.getConnectionStability(), 3), 8, 1);
-	print(intToSizedString(ReceiveData::receivingConnectionStability, 3), 8, 1);
+	//print(intToSizedString(ReceiveData::receivingConnectionStability, 3), 8, 1);
+	print(intToSizedString(ReceiveData::altitude, 5), 8, 1);
 }
 
 /*
