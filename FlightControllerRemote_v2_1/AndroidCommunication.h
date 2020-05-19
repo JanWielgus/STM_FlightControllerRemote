@@ -30,7 +30,7 @@ public:
 	void connectWithWiFiAsync(FC_TaskPlanner* taskPlanner); // asynchronically connects with wifi and add this to tasker
 	void execute() override; // receiving
 	bool isConnected();
-	// TODO: add sending method if will be a need (example in esp arduino wifi udp example)
+	void send(const uint8_t* buffer, size_t size, IPAddress ipaddress, uint16_t port);
 
 private:
 	int uint8ArrayToInt(uint8_t* arr);

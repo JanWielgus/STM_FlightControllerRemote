@@ -90,6 +90,14 @@ bool AndroidCommunication::isConnected()
 }
 
 
+void AndroidCommunication::send(const uint8_t* buffer, size_t size, IPAddress ipaddress, uint16_t port)
+{
+	udp.beginPacket(ipaddress, port);
+	udp.write(buffer, size);
+	udp.endPacket();
+}
+
+
 // Merge ints divided in the Android app to 4 x uint8
 int AndroidCommunication::uint8ArrayToInt(uint8_t* arr)
 {
