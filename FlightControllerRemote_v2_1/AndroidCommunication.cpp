@@ -68,7 +68,7 @@ void AndroidCommunication::execute()
 
 		// !!!
 		// TODO: Do something with received data
-		if (receiveBuffer[0] == 0 && recPacketSize == 18) // if packet ID == 0 and size match
+		if (receiveBuffer[0] == 100 && recPacketSize == 18) // if packet ID == 0 and size match
 		{
 			SendData::tunedControllerID = receiveBuffer[1];
 			uint8_t* temp = (uint8_t*)receiveBuffer; // the same array but of uint8_t type
