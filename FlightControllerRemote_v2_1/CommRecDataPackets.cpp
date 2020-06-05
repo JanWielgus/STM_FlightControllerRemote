@@ -19,9 +19,14 @@ namespace ReceiveData
 	bitByte bitArray1;
 	uint8_t receivingConnectionStability;
 
+	// from android device
+	uint8_t andrTunedControllerID; // which controller is tuned
+	androidPidCommPack AndrTunedPID_values; // PID values of that controller
+
 
 	// Packet only instances
 	PacketClasses::Basic DP_basic;
 	PacketClasses::Full DP_full;
+	PacketClasses::AndroidPID_Tuning DP_androidPID_tuning;
 }
 

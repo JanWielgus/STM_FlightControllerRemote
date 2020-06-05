@@ -7,12 +7,14 @@ namespace Storage
 	// Objects
 	FC_ObjectTasker tasker(config::MaxAmtOfTaskerTasks);
 	FC_TaskPlanner taskPlanner(config::MaxAmtOfTaskPlannerTasks);
-	FC_CommunicationHandler comm(&Serial, config::MaxCommPacketBytes);
+	FC_SerialCommBase serialCommBase(&Serial, config::MaxCommPacketBytes); // can be replaced with other class that implements IPacketTransceiver interface
+	FC_ESP8266_WiFiComm wifiCommBase(config::wifiCommConfig.SSID, config::wifiCommConfig.PASS,
+		config::wifiCommConfig.port, config::MaxCommPacketBytes);
+	FC_CommunicationHandler comm(&wifiCommBase); // <--- Set there communication way (something that implement IPacketTransceiver)
 	FC_ExternalADC extADC(&taskPlanner);
 	LiquidCrystal_I2C lcd(config::LCD_ADDRESS, 16, 2);
 	LcdHandler display;
 	GestureRecognizer gestureRecognizer;
-	AndroidCommunication& androidComm = *AndroidCommunication::getInstance();
 
 
 	// control sticks

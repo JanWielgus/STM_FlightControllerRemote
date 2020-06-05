@@ -96,9 +96,7 @@ namespace config
 		char* SSID = "HUAWEI_P_smart"; // wifi ssid
 		char* PASS = "22222222"; // wifi password
 		uint16_t port = 8888;
-		uint8_t connectingTimeTimeout = 15; // in seconds, max time of trying to connect to wifi
-		uint32_t receivingInterval = 100000; // in us, 100000 - 10Hz  (1000000 / hz = interval)
-	} const androidComm;
+	} const wifiCommConfig;
 }
 
 

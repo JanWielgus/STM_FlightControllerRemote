@@ -18,10 +18,12 @@
 */
 
 
-#include <FC_Communication_Base.h>
 #include <FC_CommunicationHandler.h>
+#include <FC_SerialCommBase.h>
 #include "CommSendDataPackets.h"
 #include "CommRecDataPackets.h"
+#include <DataBuffer.h>
+#include <IPacketTransceiver.h>
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 #include <FC_ObjectTasker.h>
@@ -39,7 +41,6 @@
 #include "config.h"
 #include "LCDhandler.h"
 #include "TaskerFunctions.h"
-#include "AndroidCommunication.h"
 #include "GestureRecognizer.h"
 
 using namespace Storage;
@@ -53,8 +54,12 @@ void setup()
 	Serial.begin(115200);
 	delay(300);
 
-	// bluetooth software serial
-	////////////////////androidCom.init();
+
+	// begin low-level communicaitons
+	serialCommBase.begin();
+	wifiCommBase.begin();
+	wifiCommBase.setTargetIPAddress(192, 168, 43, 151); // for now target IP is always drone CommunicationModule
+
 
 	pinMode(LED_BUILTIN, OUTPUT);
 
@@ -113,9 +118,6 @@ void setup()
 
 	// Necessary for LCD to keep up
 	Wire.setClock(400000L);
-
-	// Connect with wifi asynchronically (there is timeout in config)
-	androidComm.connectWithWiFiAsync(&taskPlanner);
 }
 
 // Add the main program code into the continuous loop() function

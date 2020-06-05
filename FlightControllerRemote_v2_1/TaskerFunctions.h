@@ -31,6 +31,12 @@ namespace TaskerFunction
 	};
 
 
+	class AndroidPID_TuningReceivedUpdate : public FC_Task
+	{
+		void execute() override;
+	};
+
+
 // Sticks
 
 	class ReadControlSticksValues : public FC_Task

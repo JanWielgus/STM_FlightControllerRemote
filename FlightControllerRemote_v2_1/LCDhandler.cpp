@@ -85,7 +85,7 @@ void LcdHandler::updateSlowParts()
 	// P PID value from the android
 	print(SendData::tunedPID_values.P, 12, 0);
 
-	print(Storage::androidComm.isConnected(), 14, 1);
+	print(Storage::wifiCommBase.isConnected(), 14, 1);
 
 	// Right switch
 	bool swState = digitalRead(config::pin.rightSwitch);

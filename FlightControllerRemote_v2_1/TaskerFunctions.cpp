@@ -12,19 +12,21 @@ void addTaskerFunctionsToTasker()
 
 
 	// Communication
-	tasker.addTask(new UpdateSteeringSending, 3703L, 0); // 270Hz (!!! TO CHECK ! I don't know why some packets are lost and don't arrive)
+	tasker.addTask(new UpdateSteeringSending, 4000L, 0); // 250Hz
 	tasker.addTask(new UpdateOtherSending, 200000L, 0); // 5Hz
-	tasker.addTask(&comm, 22000L, 0); // 45Hz
-
-	// Android communication task is automatically added after successful connection with wifi
+	tasker.addTask(&comm, 22000L, 0); // 45Hz - receiving
 
 	// add receive data packets
 	comm.addRaceiveDataPacketPointer(&ReceiveData::DP_basic, 4);
 	comm.addRaceiveDataPacketPointer(&ReceiveData::DP_full, 4);
+	// android (attached to main communication as long as it is over wifi)
+	comm.addRaceiveDataPacketPointer(&ReceiveData::DP_androidPID_tuning, 2);
 
 	// received packet events
 	ReceiveData::DP_basic.setPacketEvent(new BasicReceivedUpdate);
 	ReceiveData::DP_full.setPacketEvent(new FullReceivedUpdate);
+	// android
+	ReceiveData::DP_androidPID_tuning.setPacketEvent(new AndroidPID_TuningReceivedUpdate);
 
 	// Sticks
 	tasker.addTask(new ReadControlSticksValues, 4651L, 0); // 215Hz
@@ -79,25 +81,6 @@ namespace TaskerFunction
 		// send packed data
 		//comm.sendDataPacket(&SendData::DP_basicBackground);
 		comm.sendDataPacket(&SendData::DP_fullBackground);
-
-
-		// !!!
-		//
-		// THIS HAVE TO BE REBUILT !!!
-		/*
-		// check if need to send PID tuning values
-		if (flags.btNeedToUpdatePID)
-		{
-			flags.btNeedToUpdatePID = false;
-
-			com.toSend.PIDcontrollerID = androidData.controllerID;
-			com.toSend.PIDvalues.P = androidData.PID_P;
-			com.toSend.PIDvalues.I = androidData.PID_I;
-			com.toSend.PIDvalues.I_max = androidData.PID_Imax;
-			com.toSend.PIDvalues.D = androidData.PID_D;
-
-			com.packAndSendData(com.sendPacketTypes.TYPE3_ID, com.sendPacketTypes.TYPE3_SIZE);
-		}*/
 	}
 
 
@@ -117,6 +100,20 @@ namespace TaskerFunction
 		// ...
 
 	}
+
+
+	void AndroidPID_TuningReceivedUpdate::execute()
+	{
+		SendData::tunedControllerID = ReceiveData::andrTunedControllerID;
+		SendData::tunedPID_values.P = ReceiveData::AndrTunedPID_values.P / 100.f;
+		SendData::tunedPID_values.I = ReceiveData::AndrTunedPID_values.I / 100.f;
+		SendData::tunedPID_values.I_max = (uint16_t)ReceiveData::AndrTunedPID_values.I_max;
+		SendData::tunedPID_values.D = ReceiveData::AndrTunedPID_values.D / 100.f;
+
+		// send new values
+		Storage::comm.sendDataPacket(&SendData::DP_PID_params);
+	}
+
 
 
 	// Sticks
