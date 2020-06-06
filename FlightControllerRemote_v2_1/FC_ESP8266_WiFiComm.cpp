@@ -2,7 +2,7 @@
 // Date: 04.06.2020
 //
 
-#include "FC_ESP8266_WiFiComm.h"
+#include <FC_ESP8266_WiFiComm.h>
 
 
 FC_ESP8266_WiFiComm::FC_ESP8266_WiFiComm(const char* ssid, const char* pass, uint16_t port, size_t maxPacketSize)
@@ -63,13 +63,13 @@ bool FC_ESP8266_WiFiComm::send(const uint8_t* buffer, size_t size)
 	udp.beginPacket(targetIPAddress, Port);
 	udp.write(buffer, size);
 	bool result = udp.endPacket();
-
+	
 	return result;
 }
 
 
 
-const DataBuffer FC_ESP8266_WiFiComm::receiveNextData()
+DataBuffer FC_ESP8266_WiFiComm::receiveNextData()
 {
 	if (checkIfUdpBeginned() == false)
 	{
@@ -93,7 +93,8 @@ const DataBuffer FC_ESP8266_WiFiComm::receiveNextData()
 
 size_t FC_ESP8266_WiFiComm::available()
 {
-	return udp.available();
+	//return udp.available();
+	return true;
 }
 
 
